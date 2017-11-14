@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--/* 左侧菜单栏  */-->
+
+<div id="sidebar_section" th:remove="tag">
+	<div id="sidebar" class="sidebar            responsive">
+		<script type="text/javascript">
+			try {
+				ace.settings.check('sidebar', 'fixed')
+			} catch (e) {
+			}
+		</script>
+		<!-- 四个小按钮的div -->
+		<div class="sidebar-shortcuts" id="sidebar-shortcuts">
+			<div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+				<button class="btn btn-success">
+					<i class="ace-icon fa fa-signal"></i>
+				</button>
+				<button class="btn btn-info">
+					<i class="ace-icon fa fa-pencil"></i>
+				</button>
+				<!-- #section:basics/sidebar.layout.shortcuts -->
+				<button class="btn btn-warning">
+					<i class="ace-icon fa fa-users"></i>
+				</button>
+				<button class="btn btn-danger">
+					<i class="ace-icon fa fa-cogs"></i>
+				</button>
+				<!-- /section:basics/sidebar.layout.shortcuts -->
+			</div>
+
+			<div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+				<span class="btn btn-success"></span> <span class="btn btn-info"></span>
+				<span class="btn btn-warning"></span> <span class="btn btn-danger"></span>
+			</div>
+		</div>
+		<!-- /.sidebar-shortcuts. 4个小按钮的div end-->
+
+		<!-- 菜单栏 start -->
+		<ul class="nav nav-list" >
+			<li class=""><a href="#" class="dropdown-toggle">
+			<i class="menu-icon fa fa-cog"></i>
+			<span class="menu-text">系统管理</span>
+			<b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
+				<ul class="submenu">
+					<li class=""><a href="#/sys/user/page"
+						data-url="/sys/user/page"><i
+							class="menu-icon fa fa-caret-right"></i><span class="menu-text">用户管理</span></a><b
+						class="arrow"></b></li>
+					<li class=""><a href="#/sys/group/page"
+						data-url="/sys/group/page"><i
+							class="menu-icon fa fa-caret-right"></i><span class="menu-text">用户组管理</span></a><b
+						class="arrow"></b></li>
+					<li class=""><a href="#/sys/role/page"
+						data-url="/sys/role/page"><i
+							class="menu-icon fa fa-caret-right"></i><span class="menu-text">角色管理</span></a><b
+						class="arrow"></b></li>
+					<li class=""><a href="#/sys/menu/page"
+						data-url="/sys/menu/page"><i
+							class="menu-icon fa fa-caret-right"></i><span class="menu-text">菜单管理</span></a><b
+						class="arrow"></b></li>
+					<li class=""><a href="#/sys/log/page" data-url="/sys/log/page"><i
+							class="menu-icon fa fa-caret-right"></i><span class="menu-text">日志查看</span></a><b
+						class="arrow"></b></li>
+					<li class=""><a href="#" class="dropdown-toggle"><i
+							class="menu-icon fa fa-caret-right"></i><span class="menu-text">
+								访问控制</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
+						<ul class="submenu">
+							<li class=""><a href="#/sys/roleMenu"
+								data-url="/sys/roleMenu"><i
+									class="menu-icon fa fa-caret-right"></i><span class="menu-text">菜单分配</span></a><b
+								class="arrow"></b></li>
+						</ul></li>
+					<li class=""><a href="#" class="dropdown-toggle"><i
+							class="menu-icon fa fa-caret-right"></i><span class="menu-text">
+								字典管理</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b>
+						<ul class="submenu">
+							<li class=""><a href="#/dict/dictType/page"
+								data-url="/dict/dictType/page"><i
+									class="menu-icon fa fa-caret-right"></i><span class="menu-text">字典类型</span></a><b
+								class="arrow"></b></li>
+							<li class=""><a href="#/dict/dictionary/page"
+								data-url="/dict/dictionary/page"><i
+									class="menu-icon fa fa-caret-right"></i><span class="menu-text">字典</span></a><b
+								class="arrow"></b></li>
+						</ul></li>
+				</ul></li>
+
+	<li class="">
+				<a href="#" class="dropdown-toggle">
+					<i class="menu-icon fa fa-list"></i>
+						<span class="menu-text">基础信息管理</span>
+							<b class="arrow fa fa-angle-down"></b>
+				</a>
+					<b class="arrow"></b>
+				<ul class="submenu nav-hide" style="display: none;">
+					<li class="">
+						<a href="#" class="dropdown-toggle">
+							<i class="menu-icon fa fa-caret-right"></i>
+								<span class="menu-text">材料管理</span>
+									<b class="arrow fa fa-angle-down"></b>
+						</a>
+							<b class="arrow"></b>
+				  	 <ul class="submenu nav-hide" style="display: none;">
+							<li class=""><a href="#/base/materialcategory/page" data-url="/base/materialcategory/page">
+								<i class="menu-icon fa fa-caret-right"></i>
+									<span class="menu-text">材料分类</span></a>
+										<b class="arrow"></b>
+							</li>
+							<li class="">
+								<a href="#/base/material/page" data-url="/base/material/page">
+									<i class="menu-icon fa fa-caret-right"></i>
+										<span class="menu-text">材料信息</span>
+								</a>
+									<b class="arrow"></b>
+							</li>
+					</ul>
+				</li>
+					<li class="">
+						<a href="#/base/warehouse/page" data-url="/base/warehouse/page">
+							<i class="menu-icon fa fa-caret-right"></i>
+								<span class="menu-text">仓库管理</span>
+						</a>
+								<b class="arrow"></b>
+					</li>
+					<li class="">
+						<a href="#/base/supplier/page" data-url="/base/supplier/page">
+							<i class="menu-icon fa fa-caret-right"></i>
+								<span class="menu-text">供应商管理</span>
+						</a>
+						<b class="arrow"></b>
+					</li>
+			</ul>
+		</li>
+
+
+<li class="">
+				<a href="#" class="dropdown-toggle">
+					<i class="menu-icon fa fa-list"></i>
+						<span class="menu-text">采购管理</span>
+							<b class="arrow fa fa-angle-down"></b>
+				</a>
+					<b class="arrow"></b>
+				<ul class="submenu nav-hide" style="display: none;">
+	
+					<li class="">
+						<a href="#/base/purchase/page" data-url="/base/purchase/page">
+							<i class="menu-icon fa fa-caret-right"></i>
+								<span class="menu-text">采购进货</span>
+						</a>
+								<b class="arrow"></b>
+					</li>
+					<li class="">
+						<a href="#/base/return/page" data-url="/base/return/page">
+							<i class="menu-icon fa fa-caret-right"></i>
+								<span class="menu-text">采购退货</span>
+						</a>
+						<b class="arrow"></b>
+					</li>
+			</ul>
+		</li>
+
+		<li class="">
+				<a href="#" class="dropdown-toggle">
+					<i class="menu-icon fa fa-list"></i>
+						<span class="menu-text">前台管理</span>
+							<b class="arrow fa fa-angle-down"></b>
+				</a>
+					<b class="arrow"></b>
+				<ul class="submenu nav-hide" style="display: none;">
+	
+					<li class="">
+						<a href="#/base/sale/page" data-url="/base/sale/page">
+							<i class="menu-icon fa fa-caret-right"></i>
+								<span class="menu-text">销售管理</span>
+						</a>
+								<b class="arrow"></b>
+					</li>
+					<li class="">
+						<a href="#/base/member/page" data-url="/base/member/page">
+							<i class="menu-icon fa fa-caret-right"></i>
+								<span class="menu-text">会员管理</span>
+						</a>
+								<b class="arrow"></b>
+					</li>
+			
+			</ul>
+		</li>
+		</ul>
+		<!-- /.nav-list -->
+
+		<!-- #section:basics/sidebar.layout.minimize -->
+		<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+			<i class="ace-icon fa fa-angle-double-left"
+				data-icon1="ace-icon fa fa-angle-double-left"
+				data-icon2="ace-icon fa fa-angle-double-right"></i>
+		</div>
+		<!-- /section:basics/sidebar.layout.minimize -->
+		<script type="text/javascript">
+			try {
+				ace.settings.check('sidebar', 'collapsed')
+			} catch (e) {
+			}
+		</script>
+	</div>
+
+</div>
+</html>

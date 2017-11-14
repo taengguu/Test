@@ -1,0 +1,606 @@
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro" th:remove="tag">
+<title>供应管理</title>
+
+<div class="page-header">
+	<h1>
+		供应商管理 <small> <i class="ace-icon fa fa-angle-double-right"></i>
+			供应管理
+		</small>
+	</h1>
+</div>
+
+<div class="row">
+	<div class="col-xs-12">
+		<button class="btn btn-primary" id="find-supplier-btn">
+			<i class="ace-icon fa fa-eye bigger-120" />查看
+		</button>
+
+		<button class="btn btn-primary no-border" id="add-supplier-btn">
+			<i class="ace-icon fa fa-plus bigger-120" />新建
+		</button>
+		<button class="btn btn-warning no-border" id="update-supplier-btn">
+			<i class="ace-icon fa fa-pencil bigger-120" />修改
+		</button>
+		<button class="btn btn-danger no-border" id="delete-supplier-btn">
+			<i class="ace-icon fa fa-trash-o bigger-120" />删除
+		</button>
+
+		<div class="btn-group">
+			<button class="btn btn-info no-border" id="search-supplier-btn"
+				style="height: 42px">
+				<i class="ace-icon fa fa-search bigger-120" />搜索
+			</button>
+			<button class="btn btn-info dropdown-toggle" id="toggle-search-id"
+				style="height: 42px">
+				<span class="ace-icon fa fa-caret-down icon-only bigger-120"></span>
+			</button>
+		</div>
+		<!-- /.btn-group -->
+	</div>
+	<!-- 搜索局栏 -->
+	<div class="col-xs-12" style="display: none;"
+		id="show-search-supplier-div">
+		<div class="space-2"></div>
+		<form class="form-inline" role="form" id="search-supplier-form">
+
+			
+			<div class="form-group">
+				<label for="search-serialNo">供应商编号:</label>&nbsp; <input type="text"
+					class="form-control input-sm" id="search-serialNo" name="serialNo"
+					placeholder="如：201501" />
+			</div>
+				&nbsp;&nbsp;
+			<div class="form-group">
+				<label for="search-name">供应商名称:</label> &nbsp;
+	<input type="text"
+					class="form-control input-sm" id="search-supplierName" name="supplierName"
+					placeholder="如：201501" />
+			</div>
+			&nbsp;&nbsp;
+			<div class="form-group">
+				<label for="search-name">地址:</label>&nbsp;	<input type="text"
+					class="form-control input-sm" id="search-supplierAddress" name="supplierAddress"
+					placeholder="如：201501" />
+			</div>
+		</form>
+	</div>
+
+	<div class="col-xs-12">
+		<!-- jqGrid表格和分页 -->
+		<table id="grid-table"></table>
+		<div id="grid-pager"></div>
+	</div>
+</div>
+
+<!-- 查看供应商的modal -->
+<div class="modal fade" id="show-supplier-modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header table-header" style="padding: 8px">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true" class="white">&times;</span>
+				</button>
+				<h5 class="modal-title">仓库信息</h5>
+			</div>
+			<div class="modal-body no-padding">
+				<!-- 用户信息 -->
+				<!-- 			<div class="profile-user-info profile-user-info-striped"
+					style="width: 100%">
+ -->
+				<form class="form" id="show-supplier-form">
+					<div class="profile-info-row">
+						<div class="profile-info-name">供应商编号</div>
+
+						<div class="profile-info-value">
+							<input type="text" name="serialNo" id="serialNo" disabled="true" />
+						</div>
+						<div class="profile-info-name">供应商名称</div>
+
+						<div class="profile-info-value">
+							<input type="text" name="supplierName" id="supplierName" disabled="true" />
+						</div>
+					</div>
+		
+							<div class="profile-info-row">
+						<div class="profile-info-name">联系电话:</div>
+
+						<div class="profile-info-value">
+							<input type="text" name="supplierTel" id="supplierTel" disabled="true" />
+						</div>
+						<div class="profile-info-name">联系邮箱:</div>
+
+						<div class="profile-info-value">
+							<input type="text" name="supplierAddress" id="supplierAddress" disabled="true" />
+						</div>
+					</div>
+					<div class="profile-info-row">
+						<div class="profile-info-name">地址</div>
+						<div class="profile-info-value">
+							<input type="text" name="supplierAddress" id="supplierAddress"  disabled="true" />
+						</div>
+					</div>
+					<div class="profile-info-row">
+						<div class="profile-info-name">简介:</div>
+						<div class="profile-info-value">
+							<input type="text" name="supplierInfo" id="supplierInfo"   disabled="true" />
+						</div>
+					</div>
+					<div class="">
+						<div class="profile-info-name" id="profile-info-textAreaName">备注</div>
+						<div class="profile-info-value" >
+						<textarea class="" name="remark" id="remark"  style="resize:none;padding-left: 0px;" disabled="true"  ></textarea>
+						
+						</div>
+
+					</div>
+				</form>
+				<!-- 			</div> -->
+				
+			</div>
+			<div class="modal-footer" style="padding: 8px">
+				<button type="button" class="btn btn-white btn-default btn-round"
+					data-dismiss="modal">
+					<i class="ace-icon fa fa-times red2"></i> 关闭
+				</button>
+				<button type="button" class="btn btn-white btn-info btn-bold"
+					data-dismiss="modal">
+					<i class="ace-icon fa fa-check"></i> 确定
+				</button>
+			</div>
+			<!--     modal-footer -->
+		</div>
+	</div>
+</div>
+<!-- /.modal -->
+
+<!-- 编辑用户信息的modal -->
+<div class="modal fade" id="edit-user-modal">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header table-header" style="padding: 8px">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true" class="white">&times;</span>
+				</button>
+				<h5 class="modal-title">供应商信息</h5>
+			</div>
+			<div class="modal-body no-padding-bottom">
+				<!-- 用户信息 -->
+				<form class="form" id="edit-supplier-form">
+					<input type="hidden" name="id" id="hidden-supplier-id" />
+
+					<!-- 修改表单提交的时候，需要用到这个input，添加的时候，需要去掉 -->
+					<input type="hidden" name="_method" value="PUT" />
+					<div class="row form-group">
+						<label class="control-label col-xs-2 no-padding-right"
+							for="edit-serialNo">供应商编号:</label>
+						<div class="col-xs-4">
+							<input type="text" class="input-sm" name="serialNo"
+								id="edit-serialNo" />
+						</div>
+						<label class="control-label col-xs-2" for="edit-roomType">供应商名称:</label>
+						<div class="col-xs-4">
+						<input type="text" class="input-sm" name="supplierName"
+								id="edit-supplierName" />
+						</div>
+					</div>
+										<div class="row form-group">
+						<label class="control-label col-xs-2" for="edit-roomType">联系方式:</label>
+						<div class="col-xs-4">
+						<input type="text" class="input-sm" name="supplierTel"
+								id="edit-supplierTel" />
+						</div>
+						<label class="control-label col-xs-2 no-padding-right"
+							for="edit-serialNo">联系邮箱:</label>
+						<div class="col-xs-4">
+							<input type="text" class="input-sm" name="supplierEmail"
+								id="edit-supplierEmail" />
+						</div>
+					</div>
+					
+						<div class="row form-group">
+						<label class="control-label col-xs-2 no-padding-right"
+							for="edit-serialNo">地址:</label>
+						<div class="col-xs-4">
+							<input type="text" class="input-sm" name="supplierAddress"
+								id="edit-supplierAddress" style="width:465px"/>
+						</div>
+					
+					</div>
+
+					<div class="row form-group">
+	
+						<label class="control-label col-xs-2" for="edit-roomType">简介:</label>
+						<div class="col-xs-4">
+						<input type="text" class="input-sm" name="supplierInfo"
+								id="edit-supplierInfo" style="width:465px"/>
+						</div>
+					</div>
+					<div class="row form-group">
+						<label class="control-label col-xs-2 no-padding-right"
+							for="edit-remarks">备注:</label>
+						<div class="col-xs-10">
+								<textarea  class="form-control"  name="remark" id="edit-remark"  style="resize:none;padding:0;"  ></textarea>
+						</div>
+
+					</div>
+
+				</form>
+			</div>
+			<div class="modal-footer" style="padding: 8px">
+				<button type="button" class="btn btn-white btn-default btn-round"
+					data-dismiss="modal">
+					<i class="ace-icon fa fa-times red2"></i> 关闭
+				</button>
+				<button type="button" class="btn btn-white btn-info btn-bold"
+					id="save-for-update-btn">
+					<i class="ace-icon fa fa-floppy-o bigger-120 blue"></i> 保存
+				</button>
+				<button type="button" class="btn btn-white btn-info btn-bold"
+					id="save-for-add-btn">
+					<i class="ace-icon fa fa-plus bigger-120 blue"></i> 新建
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /.modal -->
+
+<script type="text/javascript" th:inline="javascript">
+/*<![CDATA[*/
+        $.ace_ajax_finish(function() {
+            jQuery(function ($) {
+
+                //鼠标悬停提示信息
+                $('[data-rel=tooltip]').tooltip();
+                $('[data-rel=popover]').popover({html:true});
+
+                var grid_selector = "#grid-table"; //jqGrid表格
+                var pager_selector = "#grid-pager"; //
+                //resize to fit page size
+                $(window).on('resize.jqGrid',function() {
+                    $(grid_selector).jqGrid('setGridWidth',$(".page-content").width());
+                })
+
+                $(grid_selector).jqGrid({
+                    url : "/base/supplier",//获取数据的url地址
+                    datatype : "json", //获取数据的格式
+                    mtype : "get", //请求数据的方式
+                    colNames : [ 'id', '供应商编号',
+                        '供应商名称','地址','联系电话','联系邮箱','供应商信息', '备注' ],//表头
+                    colModel : [
+                                {
+                                    name : 'id',
+                                    index : 'id',
+                                    key: true,
+                                    hidden : true
+                                },
+                        {
+                            name : 'serialNo',
+                            index : 'serialNo',
+                            hidden : false
+                        },
+                        {
+                            name : 'supplierName',
+                            index : 'supplierName',
+                            hidden : false,
+                            sortable : false,
+       
+                        },
+                        {
+                            name : 'supplierAddress',
+                            index : 'supplierAddress',
+                            width : 250,
+                            hidden : false,
+                            sortable : false,
+       
+                        },
+                        {
+                            name : 'supplierTel',
+                            index : 'supplierTel',
+                            hidden : false,
+                            sortable : false,
+       
+                        },
+                        
+                        {
+                            name : 'supplierEmail',
+                            index : 'supplierEmail',
+                            hidden : false,
+                            sortable : false,
+       
+                        },
+                        {
+                            name : 'supplierInfo',
+                            index : 'supplierInfo',
+                            hidden : true,
+                            sortable : false,
+       
+                        },
+                        {
+                            name : 'remark',
+                            index : 'remark',  
+                            hidden : true,
+                            sortable : false,
+                        }], //后端的数据
+                    rowNum : 10,
+                    rowList : [ 10, 20, 50 ],
+                    pager : pager_selector,
+                    sortname : 'serialNo',
+                    viewrecords : true,
+                    altRows : true, //设置隔行用不同的背景色区分开
+                    sortorder : "desc",
+                    width : "auto",
+                    height : "auto",
+                    //multiboxonly : true,
+                    multiselect : true,
+                    rownumbers : false,
+                    caption : "供应商列表",
+                    loadComplete : function() {
+                        var table = this;
+                        setTimeout(function() {
+                            //styleCheckbox(table);
+                            //updateActionIcons(table);
+                            updatePagerIcons(table);
+                            //enableTooltips(table);
+                        }, 0);
+                    },
+                }) //jqGrid
+                $(window).triggerHandler('resize.jqGrid'); //初始化jqGrid大小
+
+                //搜索右边下拉按钮
+                $('#toggle-search-id').click(function() {
+                    $('#show-search-supplier-div').toggle() //显示或隐藏搜索user的div
+                })
+
+                //重新加载jqgrid数据，根据输入项
+                function reloadData() {
+                    $(grid_selector).jqGrid('setGridParam', {
+                        dataType : 'json',
+                        postData : $('#search-supplier-form').serializeObject(),	//postData.接收的是一个对象
+                        page : 1
+                    }).trigger("reloadGrid"); //重新载入#
+                }
+
+
+                //搜索
+                $('#search-supplier-btn').click(function() {
+                    if(!$('#search-supplier-form').valid()) {
+                        return false ;
+                    }
+                    reloadData() ;
+               
+                })
+                 //根据不同浏览器设置下拉框大小
+                 var select2Width = judgeBrower(false) == 'chrome' ? '160px':'170px' ;
+                 var selectWidth=  judgeBrower(false) == 'chrome' ? '160px':'170px' ;
+                 //根据不同浏览器设置textarea大小
+                 var textAreCols = judgeBrower(false) == 'chrome' ? '55':'60' ;
+                 var editTextWidth = judgeBrower(false) == 'chrome' ? '455px':'468px' ;
+                 var textWidth = judgeBrower(false) == 'chrome' ? '438px':'445px' ;
+                 var padding=judgeBrower(false) == 'chrome' ? '10px':'20px' ;
+                 
+                 
+                 //美化下拉框
+                $(".select2").css('width', select2Width).select2({placeholder:"请选择",allowClear : true}) ;
+                $(".form-control").css('width',selectWidth);
+                //美化编辑表单的textarea
+                $("#edit-remark").attr("cols",textAreCols);
+                $("#edit-remark").attr("rows",'6');
+                $("#edit-remark").css('width', editTextWidth);
+            
+                //美化查看表单的textarea
+                $("#profile-info-textAreaName").css('padding-right', padding);
+                $("#remark").attr("cols",textAreCols);
+                $("#remark").attr("rows",'6');
+                $("#remark").css('width', textWidth);
+                
+                
+                //查看客房信息
+                $('#find-supplier-btn').click(function() {
+                    var selectedIds = $(grid_selector).jqGrid("getGridParam", "selarrrow");
+                    if (selectedIds.length !== 1) {
+                        showInfoMsg("请选择一条数据");
+                        return false;
+                    }
+                    var id=$(grid_selector).jqGrid('getGridParam','selrow')	; //得到被选择行
+                    var rowData = $(grid_selector).jqGrid('getRowData',id);
+                    
+                    $('#show-supplier-modal').modal()
+                
+                   fillform($('#show-supplier-form'),rowData) 
+                })
+
+
+                //新建客房信息modal 显示
+                $('#add-supplier-btn').click(function(){
+                    //清除错误验证
+                    $('#edit-supplier-form .form-group').removeClass('has-error');
+                    $('#edit-supplier-form').validate().resetForm() ;
+                    
+                    $('#edit-supplier-form')[0].reset() ;	//重置表单
+                    $('#edit-serialNo').rules('add',validate_serialNo_rule) ;	//开启serialNo的校验
+                    $('#edit-serialNo').attr('disabled',false) ;
+
+                    $('.select2',$('#edit-supplier-form')).trigger("change") //select2下拉框数据显示
+                   
+                    $("select[id='edit-status']").val("empty");
+                    
+                    $('#save-for-add-btn').show() ;	//显示新建按钮
+                    $('#save-for-update-btn').hide() ;	//隐藏保存按钮
+                    
+                  
+                    $('#edit-user-modal').modal();
+                })
+
+                //修改供应商信息modal 显示
+                $('#update-supplier-btn').click(function(){
+                    var selectedIds = $(grid_selector).jqGrid("getGridParam", "selarrrow");
+                    if (selectedIds.length !== 1) {
+                        showInfoMsg("请选择一条数据");
+                        return false;
+                    }
+                    //清除错误验证
+                    $('#edit-supplier-form .form-group').removeClass('has-error');
+                    $('#edit-supplier-form').validate().resetForm() ;
+
+                    $('#edit-supplier-form')[0].reset() ;	//重置表单
+                    $('#edit-serialNo').rules('remove') ;	//关闭serialNo的校验
+                    $('#edit-serialNo').attr('disabled',true) ;
+
+                    //var id=$(grid_selector).jqGrid('getGridParam','selrow')	; //得到被选择行
+                    //var rowData = $(grid_selector).jqGrid('getRowData',id);	//得到被选择行的数据
+                    var rowData =  $(grid_selector).jqGrid('getRowData',selectedIds[0]) ;
+                
+                    $.ajax({
+                        url:"/base/supplier/"+rowData.id,
+                        type : 'GET',
+                        dataType : 'json',
+                        success:function(data) {
+                        
+                            $('#edit-supplier-form')[0].reset() ;	//重置表单
+                            showMsg4model(data)
+                            fillform($('#edit-supplier-form'),data.data) //填充表单
+                         
+                            $('.select2',$('#edit-supplier-form')).trigger("change") //select2下拉框数据显示                           
+                         
+              
+                        }
+                    })
+                    $('#save-for-add-btn').hide() ;	//隐藏保存按钮
+                    $('#save-for-update-btn').show() ; //显示新建按钮
+                   
+                
+                    $('#edit-user-modal').modal();
+                })
+
+
+                //新建供应商保存按钮
+                $('#save-for-add-btn').click(function(){
+                    if(!$('#edit-supplier-form').valid()) {
+                        return false ;
+                    }
+                    showLoading("正在提交数据，请稍后...") ;
+                    
+                    $.ajax({
+                        url:'/base/supplier',
+                        type:'POST',
+                        dataType:'json',
+                        data: $.param($('#edit-supplier-form').serializeObject(['id','_method'])),
+                        success:function(data) {
+                    
+                            showMsg4model(data,true) ;
+                            $('#edit-user-modal').modal('hide') ;
+                            reloadData();
+                        }
+                    })
+                    hideLoading() ;
+                })
+
+                //保存供应商按钮
+                $('#save-for-update-btn').click(function(){
+                    if(!$('#edit-supplier-form').valid()) {
+                        return false ;
+                    }
+                    showLoading("正在提交数据，请稍后...") ;
+                    $.ajax({
+                        url: '/base/supplier',
+                        type: 'POST',
+                        dataType:'json',
+                        data: $.param($('#edit-supplier-form').serializeObject()),
+                        success:function(data){
+                            showMsg4model(data,true);
+                            $('#edit-user-modal').modal('hide') ;
+                            reloadData();
+                        }
+                    })
+                    hideLoading() ;
+                })
+
+                
+                //点击删除按钮
+                $('#delete-supplier-btn').click(function(){
+                    var selectedIds = $(grid_selector).jqGrid("getGridParam", "selarrrow");
+                    
+                    if (selectedIds.length <= 0) {
+                        showInfoMsg("请选择数据");
+                        return false;
+                    }
+                    bootbox.confirm("您确定要删除所选的供应商数据吗？",function(result){
+                        if(result) {
+                        	
+                            showLoading() ;
+                            
+                            var idsParam = "ids="+selectedIds.join('&ids=') ;
+                            $.ajax({
+                                url: "/base/supplier",
+                                type: "POST",
+                                dataType: "JSON",
+                                data: idsParam+"&_method=PATCH",
+                                success: function(data) {
+                                    showMsg4model(data,true) ;
+                                    reloadData() ;
+                                }
+                            })
+                            hideLoading();
+                        }
+                    })
+                })
+
+
+                //校验账号的规则
+                var validate_serialNo_rule = {
+                    required: true ,
+                    alphabetAndNum: true,	//只能数字或字母
+                    rangelength: [1,8],
+                    remote: function() {
+                        return '/base/supplier/validation/'+$('#edit-serialNo').val()
+                    }
+                } ;
+                
+                
+                
+                //校验用户
+                $('#edit-supplier-form').validate({
+                    errorElement: 'div',
+                    errorClass: 'help-block',
+                    focusInvalid: false,
+                    ignore: "",
+                    rules: {
+                    	serialNo: validate_serialNo_rule,
+                    	supplierName:{
+                            required: true,                       
+                        }
+                    },
+
+                    messages: {
+                    	serialNo: {
+                            required:'请输入供应商编号',
+                            alphabetAndNum:'请输入输入数字或字母',
+                            remote:'供应商已存在'
+                        },
+                        supplierName: {
+                            required:'请输入供应商名称',
+                           
+                        }
+                        
+                    },
+
+                    highlight: function (e) {
+                        $(e).closest('.form-group').removeClass('has-info').addClass('has-error');
+                    },
+
+                    success: function (e) {
+                        $(e).closest('.form-group').removeClass('has-error');//.addClass('has-info');
+                    },
+                }) ;
+                
+
+            })
+        })
+        /*]]>*/
+    </script>
+
+</html>
